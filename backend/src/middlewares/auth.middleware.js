@@ -1,0 +1,22 @@
+import { decode } from "jsonwebtoken";
+import { readAccessToken } from "../utils/auth.utils.js"
+
+export function authenticate(req,res,next){
+    const accessToken=req.headers.authorization?.split(" ")[1]
+    if(!accessToken){
+        return res.status(400).json({
+            message:"Access token not found"
+        })
+    }
+    try{
+        const decoded = readAccessToken(accessToken);
+        const {userId,role}=decoded;
+        req.user=decoded;
+        next();
+    }
+    catch(err){
+        return res.status(400).json({
+            message:"Invalid or expired access token"
+        })
+    }
+}
