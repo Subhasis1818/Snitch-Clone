@@ -30,8 +30,28 @@ const productSchema= new mongoose.Schema({
         currency:{
             type:String,
             enum:["INR","USD"],
-            default:["INR"]
+            default:"INR"
         }
 
+    },
+    sizes:[
+        {
+            size:{
+                type:"String",
+                emun:["XS","S","M","L","XL","XXL"]
+            },
+            stock:{
+                type:Number,
+                min:0,
+                default:0
+            }
+        }
+    ],
+    seller:{
+        type:mongoose.Types.ObjectId,
+        ref:"users",
+        required:true
     }
 })
+const productModel=mongoose.model("products",productSchema);
+export default productModel;
